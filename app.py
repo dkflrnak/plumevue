@@ -228,7 +228,7 @@ def home():
         data = json.loads(content)
 
         # 메모리 절약용
-        cards = data["cards"]
+        cards = data["cards"][:4]
 
         # ---------------------------------------------------
         # CARD IMAGE LOOP
@@ -451,13 +451,6 @@ def home():
             draw.text(
                 (70, 800),
                 "plume vue · beauty notes",
-                font=small_font,
-                fill=(255, 255, 255, 170)
-            )
-
-            draw.text(
-                (600, 800),
-                f"{i+1:02} · 05",
                 font=small_font,
                 fill=(255, 255, 255, 170)
             )
