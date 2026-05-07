@@ -26,15 +26,37 @@ generated_images_global = []
 # ---------------------------------------------------
 def get_font(size):
 
-    paths = [
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
-    ]
+    try:
+        return ImageFont.truetype(
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+            size
+        )
 
-    for p in paths:
-        if os.path.exists(p):
-            return ImageFont.truetype(p, size)
+    except:
+        return ImageFont.load_default()
 
-    return ImageFont.load_default()
+
+# ---------------------------------------------------
+# AUTO FONT SIZE
+# ---------------------------------------------------
+def auto_font_size(text, start_size, max_width):
+
+    size = start_size
+
+    while size > 20:
+
+        font = get_font(size)
+
+        bbox = font.getbbox(text)
+
+        text_width = bbox[2] - bbox[0]
+
+        if text_width <= max_width:
+            return font
+
+        size -= 2
+
+    return get_font(20)
 
 
 # ---------------------------------------------------
@@ -200,7 +222,8 @@ def home():
 
         data = json.loads(content)
 
-        cards = data["cards"]
+        # 메모리 절약용
+        cards = data["cards"][:2]
 
         # ---------------------------------------------------
         # CARD IMAGE LOOP
@@ -214,18 +237,21 @@ def home():
                 image_paths[i % len(image_paths)]
             ).convert("RGBA")
 
-            base = base.resize((1080, 1350))
+            # 메모리 최적화
+            base.thumbnail((720, 900))
+
+            base = base.resize((720, 900))
 
             # 살짝 블러
             blur = base.filter(
-                ImageFilter.GaussianBlur(1.2)
+                ImageFilter.GaussianBlur(1)
             )
 
             # 어두운 오버레이
             overlay = Image.new(
                 "RGBA",
                 blur.size,
-                (0, 0, 0, 75)
+                (0, 0, 0, 55)
             )
 
             img = Image.alpha_composite(
@@ -236,12 +262,12 @@ def home():
             # ---------------------------------------------------
             # GLASS CARD SYSTEM
             # ---------------------------------------------------
-            box_left = 80
-            box_top = 760
-            box_right = 1000
-            box_bottom = 1240
+            box_left = 50
+            box_top = 500
+            box_right = 670
+            box_bottom = 840
 
-            radius = 55
+            radius = 45
 
             # -----------------------------
             # glass blur background
@@ -256,7 +282,7 @@ def home():
             )
 
             glass_region = glass_region.filter(
-                ImageFilter.GaussianBlur(4)
+                ImageFilter.GaussianBlur(3)
             )
 
             img.paste(
@@ -316,7 +342,7 @@ def home():
                     box_bottom - box_top
                 )
 
-                alpha = int(24 * (1 - progress))
+                alpha = int(20 * (1 - progress))
 
                 glass_draw.line(
                     [
@@ -339,9 +365,14 @@ def home():
             # ---------------------------------------------------
             # FONT
             # ---------------------------------------------------
-            title_font = get_font(68)
-            content_font = get_font(38)
-            small_font = get_font(26)
+            title_font = auto_font_size(
+                card["title"],
+                48,
+                520
+            )
+
+            content_font = get_font(28)
+            small_font = get_font(20)
 
             # ---------------------------------------------------
             # TEXT CALC
@@ -349,21 +380,21 @@ def home():
             title_lines, title_h = calc_text_block(
                 card["title"],
                 title_font,
-                12,
-                70
+                10,
+                50
             )
 
             content_lines, content_h = calc_text_block(
                 card["content"],
                 content_font,
-                22,
-                55
+                18,
+                42
             )
 
             total_h = (
                 title_h +
                 content_h +
-                40
+                30
             )
 
             start_y = (
@@ -375,7 +406,7 @@ def home():
             # HEADER
             # ---------------------------------------------------
             draw.text(
-                (90, 60),
+                (50, 40),
                 "@plume_vue",
                 font=small_font,
                 fill=(255, 255, 255, 220)
@@ -388,11 +419,11 @@ def home():
                 draw,
                 card["title"],
                 title_font,
-                1080,
+                720,
                 start_y,
                 (245, 245, 245),
-                12,
-                70
+                10,
+                50
             )
 
             # ---------------------------------------------------
@@ -402,25 +433,25 @@ def home():
                 draw,
                 card["content"],
                 content_font,
-                1080,
-                start_y + title_h + 40,
+                720,
+                start_y + title_h + 30,
                 (230, 230, 230),
-                22,
-                55
+                18,
+                42
             )
 
             # ---------------------------------------------------
             # FOOTER
             # ---------------------------------------------------
             draw.text(
-                (120, 1180),
+                (70, 800),
                 "plume vue · beauty notes",
                 font=small_font,
                 fill=(255, 255, 255, 170)
             )
 
             draw.text(
-                (920, 1180),
+                (600, 800),
                 f"{i+1:02} · 05",
                 font=small_font,
                 fill=(255, 255, 255, 170)
@@ -436,7 +467,10 @@ def home():
                 out_name
             )
 
-            img.save(out_path)
+            img.save(
+                out_path,
+                quality=85
+            )
 
             generated_images.append(
                 f"generated/{out_name}"
