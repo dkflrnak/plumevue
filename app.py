@@ -27,8 +27,6 @@ generated_images_global = []
 def get_font(size):
 
     paths = [
-        "C:/Windows/Fonts/malgun.ttf",
-        "C:/Windows/Fonts/H2GSRB.TTF",
         "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
     ]
 
