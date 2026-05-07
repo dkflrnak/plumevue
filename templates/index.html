@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>PLUME VUE CARD NEWS</title>
+
+<style>
+
+/* =========================
+   BASE RESET
+========================= */
+* {
+    box-sizing: border-box;
+}
+
+body{
+    margin:0;
+    font-family: sans-serif;
+    background: #f5ece1;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+.container{
+    width: 720px;
+    margin: 60px auto;
+}
+
+/* =========================
+   CARD WRAPPER
+========================= */
+.card{
+    background: white;
+    padding: 35px;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+/* =========================
+   TITLE
+========================= */
+h1{
+    text-align:center;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+/* =========================
+   INPUTS (IMPORTANT FIX)
+========================= */
+
+/* 일반 input */
+input[type="text"]{
+    width:100%;
+    padding:15px;
+    margin-bottom:18px;
+    border:none;
+    border-radius:14px;
+    background:#f3f3f3;
+}
+
+/* select */
+select{
+    width:100%;
+    padding:15px;
+    margin-bottom:18px;
+    border:none;
+    border-radius:14px;
+    background:#f3f3f3;
+}
+
+/* =========================
+   FILE UPLOAD FIX (핵심)
+========================= */
+input[type="file"]{
+    width:100%;
+    padding:18px;
+    margin-bottom:18px;
+    border:2px dashed #d0d0d0;
+    border-radius:14px;
+    background:#fff;
+}
+
+/* file 버튼 스타일 */
+input[type="file"]::file-selector-button{
+    background:#d9b99b;
+    border:none;
+    padding:10px 14px;
+    border-radius:10px;
+    color:white;
+    cursor:pointer;
+}
+
+/* =========================
+   BUTTON
+========================= */
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:14px;
+    background:#111;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+/* hover */
+button:hover{
+    opacity:0.9;
+}
+
+/* =========================
+   RESULT AREA
+========================= */
+.preview{
+    margin-top:25px;
+    padding:15px;
+    background:#fafafa;
+    border-radius:15px;
+    font-size:14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>PLUME VUE CARD NEWS</h1>
+
+<form method="POST" enctype="multipart/form-data">
+
+<!-- 주제 -->
+<input type="text" name="topic" placeholder="주제를 입력하세요">
+
+<!-- 템플릿 -->
+<select name="template">
+    <option value="dark">Dark Luxury</option>
+    <option value="light">Light Minimal</option>
+</select>
+
+<!-- 이미지 업로드 -->
+<input type="file" name="images" multiple>
+
+<!-- 버튼 -->
+<button type="submit">카드뉴스 생성</button>
+
+</form>
+
+<!-- 결과 -->
+<div class="preview">
+
+    {% if generated_images %}
+
+        {% for img in generated_images %}
+            <div style="margin-bottom:15px;">
+                <img src="{{ url_for('static', filename=img) }}" style="width:100%; border-radius:12px;">
+            </div>
+        {% endfor %}
+
+    {% else %}
+        여기에 결과가 표시됩니다
+    {% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
