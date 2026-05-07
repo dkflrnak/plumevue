@@ -172,6 +172,7 @@ def home():
 1장 훅
 2장 원인
 3장 해결
+4장 마무리 감성
 
 조건:
 - 20대 여성 타겟
@@ -225,7 +226,7 @@ def home():
         data = json.loads(content)
 
         # 메모리 절약용
-        cards = data["cards"][:3]
+        cards = data["cards"][:4]
 
         # ---------------------------------------------------
         # CARD IMAGE LOOP
