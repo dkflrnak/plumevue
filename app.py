@@ -28,7 +28,7 @@ def get_font(size):
 
     try:
         return ImageFont.truetype(
-            "fonts/Pretendard-Regular.otf",
+            "fonts/Pretendard-Medium.otf",
             size
         )
 
@@ -170,11 +170,8 @@ def home():
 
 구조:
 1장 훅
-2장 공감
-3장 원인
-4장 해결
-5장 CTA
-6장 마무리 감성
+2장 원인
+3장 해결
 
 조건:
 - 20대 여성 타겟
