@@ -228,7 +228,7 @@ def home():
         data = json.loads(content)
 
         # 메모리 절약용
-        cards = data["cards"][:4]
+        cards = data["cards"][:3]
 
         # ---------------------------------------------------
         # CARD IMAGE LOOP
