@@ -28,7 +28,7 @@ def get_font(size):
 
     try:
         return ImageFont.truetype(
-            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+            "fonts/Pretendard-Medium.otf",
             size
         )
 
