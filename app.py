@@ -28,7 +28,7 @@ def get_font(size):
 
     try:
         return ImageFont.truetype(
-            "fonts/Pretendard-Medium.otf",
+            "fonts/Pretendard-Regular.otf",
             size
         )
 
@@ -174,6 +174,7 @@ def home():
 3장 원인
 4장 해결
 5장 CTA
+6장 마무리 감성
 
 조건:
 - 20대 여성 타겟
@@ -205,6 +206,10 @@ def home():
       "title":"...",
       "content":"..."
     }}
+        {{
+      "title":"...",
+      "content":"..."
+    }}
   ]
 }}
 """
@@ -223,7 +228,7 @@ def home():
         data = json.loads(content)
 
         # 메모리 절약용
-        cards = data["cards"][:2]
+        cards = data["cards"]
 
         # ---------------------------------------------------
         # CARD IMAGE LOOP
